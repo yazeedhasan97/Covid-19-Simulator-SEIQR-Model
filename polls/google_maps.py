@@ -2,7 +2,7 @@ import gmaps, geopy
 from ipywidgets.embed import embed_minimal_html
 import ipywidgets as widgets
 from IPython.display import display
-API_KEY = 'AIzaSyBqmaSMESUuaWht383WqtEtLDyGff5GrKs'
+API_KEY = 'Put YOURS'
 gmaps.configure(api_key=API_KEY)
 class ReverseGeocoder(object):
     """
