@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19 Jordan Simulator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+
+<body style="background-color: #F5F5DC;">
+
+
+<div class="navbar">
+    <img src="{% static 'my_app/kaddb-jordan-logo.png' %}" height="52" width="120"
+         align="middle" style="border-radius: 5px;">
+    <a href="#home">COVID-19 Jordan Simulator</a>
+</div>
+
+<div class="outer-content">
+    <div class="center_element">
+        <div class="container p-3 border">
+            <p>
+                This site came per request to simulate the speared of the COVID-19 in Jordan, here we are using
+                mathematical and artificial inelegant models to simulate the process and how different actions (eg:
+                isolation)reflect on the spread. Numerical methods are employed to solve the obtained system of
+                differential
+                equations.
+            </p>
+            <br>
+            <h3>Model Derivation</h3>
+            <hr>
+            <p>In the SEIQRS model for infections that do not confer immunity, the dynamic behavior described as:</p>
+            <ul>
+                <li>Susceptible nodes first goes through a latent period (and is said to become exposed).</li>
+                <li>After infection before becoming infectious, there after some infected nodes stay in the I class
+                    while they are infectious
+                    and then move to the removed class R upon temporary recovery.
+                </li>
+                <li>Other infected nodes are transferred into the quarantine class Q while they are infectious and then
+                    move to the R class.
+                </li>
+                <li>Since in the acquired immunity is not permanent, the recovered nodes return back to the susceptible
+                    class.
+                </li>
+            </ul>
+            <p>This Model consist of 6 compartment described as follow:<br>
+                Susceptible (S) – latent (E) – infectious (I) – quarantined (Q) – recovered (R) - Susceptible (S).</p>
+            <img src="{% static 'my_app/model.png' %}" alt="Model Graph" height="490" width="1100"
+                 align="middle" style="border-radius: 5px;">
+            <br>
+            <br>
+            <h3>Parameters Description:</h3>
+            <hr>
+            <ul>
+                <li><b>Initial Susceptible</b> : (Total Population) The number of susceptible individuals at the
+                    beginning of
+                    the model run.
+                </li>
+                <li><b>Initial Exposed</b> : The number of exposed individuals at the beginning of the model run.</li>
+                <li><b>Initial Infected</b> : The number of infected individuals at the beginning of the model run.</li>
+                <li><b>Initial Recovered</b> : The number of recovered individuals at the beginning of the model run.
+                </li>
+                <li><b>Initial Quarantine</b> : The number of quarantined individuals at the beginning of the model run.
+                </li>
+                <li><b>b</b> : The recruitment rate of susceptible nodes to the population.<br></li>
+                <li><b>Beta</b> : The parameter controlling how often a susceptible-infected contact results in a new
+                    exposure.
+                </li>
+                <li><b>Epsilon</b> : The rate an infected recovers and moves into the recovered phase.</li>
+                <li><b>Gamma</b> : The rate at which an exposed person becomes infective.</li>
+                <li><b>d</b> : The natural mortality rate (this is unrelated to disease).</li>
+                <li><b>Mu</b> : The disease related death rate constant in the compartments $I$ and $Q$.</li>
+                <li><b>Theta</b> : The rate at which nodes return to recovered class $R$ from compartments $Q$.</li>
+                <li><b>Zeta</b> : The loss of immunity rate constant.</li>
+                <li><b>Delta</b> : The rate constant for nodes leaving the infective compartment $I$ for quarantine
+                    compartment.
+                </li>
+                <li><b>XI </b> : The rate constant for nodes leaving the exposed compartment $E$ for recovered
+                    compartment.
+                </li>
+            </ul>
+
+            <form method="POST">
+                <div class="row align-items-start">
+                    {% csrf_token %}
+                    <div class="col-sm">
+                        <br>
+                        <h4>Initials </h4>
+                        <hr>
+                        <label><b>Total Population: </b></label>
+                        {{ model_form.susceptible }}
+
+                        <label><b>Exposed : </b></label>
+                        {{ model_form.exposed }}
+
+                        <label><b>Quarantine : </b></label>
+                        {{ model_form.quarantine }}
+
+                        <label><b>Infected : </b></label>
+                        {{ model_form.infected }}
+
+                        <label><b>Recovered : </b></label>
+                        {{ model_form.recovered }}
+
+                        <label><b>Max Estimated Time (In Days) : </b></label>
+                        {{ model_form.tf }}
+
+                    </div>
+
+                    <div class="col-sm">
+                        <br>
+                        <h4>General Parameters</h4>
+                        <hr>
+
+                        <label><b>Number of available hospitals : </b></label>
+                        {{ model_form.hospital_number }}
+                        <br><br>
+                        <label><b>Beds per hospital : </b></label>
+                        {{ model_form.beds_ber_hospital }}<br>
+
+                        <label><b>Nurse per hospital : </b></label>
+                        {{ model_form.nurse_ber_hospital }}<br>
+
+                        <label><b>Max patients one nurse can handle : </b></label>
+                        {{ model_form.max_nurse_handel }}<br>
+
+                        <label><b>The natural mortality rate (this is unrelated to disease)</b> (d):</label>
+                        {{ model_form.d }}
+
+                        <label><b>Days for exposed to appear infected</b> :</label>
+                        {{ model_form.days_exposed_infected }}
+
+                        <label><b>Days for exposed to become infected : </b></label>
+                        {{ model_form.days_infected_recovered }}
+
+                        <label><b>Days for infected to goes quarantine : </b></label>
+                        {{ model_form.days_infected_quarantine }}
+
+                        <label><b>Days for quarantine to become recovered : </b></label>
+                        {{ model_form.days_quarantine_recovered }}
+
+                    </div>
+
+                    <div class="col-sm">
+                        <br>
+                        <h4>Model Parameters</h4>
+                        <hr>
+                        <label><b>Population growth rate</b> (b):</label>
+                        {{ model_form.b }}<br>
+
+                        <label><b>Rate of how often a susceptible-infected contact results in a new exposure</b> (beta):</label>
+                        {{ model_form.beta }}<br>
+
+                        <label><b>Rate of exposed people become recovered</b> (xi):</label>
+                        {{ model_form.xi }}<br>
+
+                        <label><b>Rate at which an exposed person becomes infected</b> (gamma):</label>
+                        {{ model_form.gamma }}<br>
+
+                        <label><b>Rate of infected people become recovered</b> (epsilon):</label>
+                        {{ model_form.epsilon }}<br>
+
+                        <label><b>Rate of infected people goes into quarantine</b> (delta):</label>
+                        {{ model_form.delta }}<br>
+
+                        <label><b>Rate of quarantine people become recovered</b> (theta):</label>
+                        {{ model_form.theta }}<br>
+
+                        <label><b>The loss of immunity rate constant</b> (zeta):</label>
+                        {{ model_form.zeta }}<br>
+
+                        <label><b>The disease-related death rate</b> (mu):</label>
+                        {{ model_form.mu }}
+                    </div>
+                </div>
+
+                <br>
+                <input type="submit" value="submit" style="width:250px;height:45px;">
+            </form>
+            <br><br>
+
+            <h3>Mathematical Model hypothesis</h3>
+            <hr>
+            <ul>
+                <li>We assume the population has a homogeneous spatial distribution and the mixing of hosts follow the
+                    law of mass action. More specifically, we assume that the local density of the total population is a
+                    constant through the total population size N(t) = S(t) + E(t) + I(t) + Q(t) + R(t) may vary with
+                    time. Here S(t); E(t); I(t); Q(t); R(t) denote the sizes of S; E; I; Q; and R; classes at any time
+                    t; respectively.<br>
+                </li>
+
+                <li>The per capita contact rate (Beta), which is the average number of effective contacts with other
+                    nodes per unit time is assumed to be a constant. The total number of new infections at a time t is
+                    given by BetaSI, with as a mass action coefficient and is used for incidence.<br>
+                </li>
+
+                <li>In this SEIQRS model, the flow is from the S class to the E class, E class to the I class, and then
+                    directly to the R class or to the Q class and then to the R class and as the recovery is not
+                    permanent in the world, it again returns back to the S class.
+                </li>
+            </ul>
+            <div class="center_element">
+                <img src="{% static 'my_app/equation.png' %}" alt="Equation"
+                     align="middle" style="border-radius: 5px;">
+            </div>
+            <br><br>
+
+            <h3>Model Results</h3>
+            <hr>
+            <div class="center_element">
+                <img src="{% static 'my_app/sss.png' %}" alt="Model Results" height="600" width="1050"
+                     align="middle" style="border-radius: 5px;padding: 10px10px 10px 10px;">
+            </div>
+
+
+            <br><br>
+
+
+            <!--        Where the plots Gooooooooooo -->
+
+
+            <br><br>
+
+            <h3>Final Numbers</h3>
+            <hr>
+            <div class="row">
+                <div class="col-sm">
+                    <!--                    <p>Sick All Time:-->
+                    <!--                        <output name="sick_all_time"> {{ sick_all_time }}</output>-->
+                    <!--                    </p>-->
+
+                    <!--                    <p>Sick Undiagnosed:-->
+                    <!--                        <output name="sick_undiagnosed"> {{ sick_undiagnosed }}</output>-->
+                    <!--                    </p>-->
+
+                    <!--                    <p>Sick Diagnosed:-->
+                    <!--                        <output name="sick_diagnosed"> {{ sick_diagnosed }}</output>-->
+                    <!--                    </p>-->
+                </div>
+                <div class="col-sm">
+                    <!--                    <p>Recovered Diagnosed:-->
+                    <!--                        <output name="recovered_diagnosed"> {{ recovered_diagnosed }}</output>-->
+                    <!--                    </p>-->
+
+                    <!--                    <p>Recovered Never Diagnosed:-->
+                    <!--                        <output name="recovered_never_diagnosed"> {{ recovered_never_diagnosed }}</output>-->
+                    <!--                    </p>-->
+
+                    <p>Total Number of Deaths:
+                        <output name="deceased"> {{ deceased }}</output>
+                    </p>
+                </div>
+            </div>
+
+            <br><br>
+
+            <h3>Additions To Know</h3>
+            <hr>
+            <div class="center_element">
+                <!--                <img src="{% static 'my_app/sss.png' %}" alt="Model Results" height="600" width="1050"-->
+                <!--                     align="middle" style="border-radius: 5px;padding: 10px10px 10px 10px;">-->
+                <div id="gmaps" style="height: 500px; width: 1050px;"></div>
+                <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqmaSMESUuaWht383WqtEtLDyGff5GrKs&callback=initMap"
+                        async defer></script>
+                <script src="{% static 'javascript/initialMap.js' %}"></script>
+            </div>
+            <br>
+            <hr>
+            <br>
+            <div class="center_element">
+                <dev id="hmaps" style="height: 500px; width: 1050px;"></dev>
+                <script type="text/javascript"
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBqmaSMESUuaWht383WqtEtLDyGff5GrKs&libraries=visualization">
+                </script>
+                <script src="{% static 'javascript/readData.js' %}"></script>
+            </div>
+
+        </div>
+    </div>
+</div>
+<hr>
+<footer class="page-footer font-small " style="background:#343a40;color:white;border-top: 1px solid red;">
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2020 Copyright:
+        <!--        <a href="https://sorha.herokuapp.com/"> sorha.herokuapp.com</a>-->
+    </div>
+    <!-- Copyright -->
+
+</footer>
+
+</body>
+</html>
+
+
+

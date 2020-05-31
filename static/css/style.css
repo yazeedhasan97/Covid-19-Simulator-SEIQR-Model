@@ -1,0 +1,179 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+.navbar {
+  overflow: hidden;
+  background-color: #014666;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.navbar a:hover{
+  border-style: ridge;
+  border-color: coral;
+  border-width: .5px;
+  margin: 5px 5px 7.5px 10px;
+}
+
+.outer-content {
+    top: 10%;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: .5%;
+    border-width: .5px;
+    background-color: #f5f5f5;
+    border-style: groove;
+    border-radius: 6px 6px 6px 6px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.15) inset;
+
+}
+
+.center_element{
+    padding: 15px;
+    margin: 0 10px;
+    height: 95%;
+    min-height: 95%;
+}​
+
+.inner-content {
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    border-style: groove;
+    background-color: #111111;
+}
+
+
+.slider {
+  -webkit-appearance: none;
+  width: 95%;
+  height: 10px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  #outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  #appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #82CAFA;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #82CAFA;
+  cursor: pointer;
+}
+.chosen-wrapper{
+  margin:0 auto 25px;
+  max-width:400px;
+  position:relative;
+  &:after{
+    pointer-events: none;
+    content: "";
+    position: absolute;
+    top: 32px;
+    right: 20px;
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid rgba(0,0,0,.5);
+    transition: all .2s cubic-bezier(.25,.46,.45,.94);
+    z-index: 9;
+  }
+  &.is-active{
+    &:after{
+      border-top: 8px solid rgba(0,0,0,1);
+      -ms-transform: rotate(180deg);
+      -webkit-transform: rotate(180deg);
+      transform: rotate(180deg);
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+.selectdiv {
+  position: relative;
+  /*Don't really need this just for demo styling*/
+
+  float: left;
+  min-width: 200px;
+  margin: 50px 33%;
+}
+
+/* IE11 hide native button (thanks Matt!) */
+select::-ms-expand {
+display: none;
+}
+
+.selectdiv:after {
+  content: '<>';
+  font: 17px "Consolas", monospace;
+  color: #333;
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+  right: 11px;
+  /*Adjust for position however you want*/
+
+  top: 18px;
+  padding: 0 0 2px;
+  border-bottom: 1px solid #999;
+  /*left line */
+
+  position: absolute;
+  pointer-events: none;
+}
+
+.selectdiv select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /* Add some styling */
+
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  height: 50px;
+  float: right;
+  margin: 5px 0px;
+  padding: 0px 24px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: #333;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  -ms-word-break: normal;
+  word-break: normal;
+}
+
+
+

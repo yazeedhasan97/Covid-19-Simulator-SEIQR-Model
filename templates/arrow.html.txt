@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+.red
+{
+width:15px;
+display:inline-block;
+background:#f00;
+height:100px;
+position:relative;
+}
+.arrow:before , .arrow:after
+{
+content: '';
+position: absolute;
+background:#f00;
+width: 10px;
+height: 10px;
+display:inline-block;
+left:8px;
+}
+.arrow:before
+{
+top:50%;
+transform:skew(-50deg);
+}
+.arrow:after
+{
+bottom:50%;
+transform:skew(50deg);
+}
+</style>
+</head>
+<body>
+
+<div class="red">
+<div class="arrow"></div>
+</div>
+</body>
+</html>
